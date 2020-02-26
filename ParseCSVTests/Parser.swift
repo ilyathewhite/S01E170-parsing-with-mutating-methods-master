@@ -7,13 +7,13 @@
 //
 
 public struct Parser<A> {
-    let run: (inout Substring) -> A?
+    let run: (inout Substring.UnicodeScalarView) -> A?
 }
 
 extension Parser {
     public func run(_ str: String, from startIndex: Int) -> (A?, String) {
         let strStartIndex = str.index(str.startIndex, offsetBy: startIndex)
-        var substr = str[strStartIndex...]
+        var substr = str.unicodeScalars[strStartIndex...]
         let res = run(&substr)
         return (res, String(substr))
     }

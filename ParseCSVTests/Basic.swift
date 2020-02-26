@@ -6,7 +6,25 @@
 //  Copyright © 2019 Ilya Belenkiy. All rights reserved.
 //
 
-public extension Parser where A == Character {
+extension UnicodeScalar {
+    var isWhitespace: Bool {
+        self.properties.isWhitespace
+    }
+
+    var decimalDigitValue: Int? {
+        let zero = UnicodeScalar("0")
+        let res = value - zero.value
+        return (res >= 0) && (res <= 9) ? Int(res) : nil
+    }
+}
+
+extension Substring.UnicodeScalarView {
+    func hasPrefix(_ value: String) -> Bool {
+        return zip(self, value.unicodeScalars).first(where: { $0.0 != $0.1 }) == nil
+    }
+}
+
+public extension Parser where A == Unicode.Scalar {
     static let char = Parser { str in
         guard !str.isEmpty else { return nil }
         let match = str.first
@@ -26,7 +44,7 @@ public extension Parser where A == String {
                     return res
                 }
                 else {
-                    res.append(str.removeFirst())
+                    res.unicodeScalars.append(str.removeFirst())
                 }
             }
             return res

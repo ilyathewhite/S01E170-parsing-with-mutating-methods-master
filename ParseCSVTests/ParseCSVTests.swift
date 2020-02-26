@@ -152,7 +152,7 @@ struct CSVTestCase {
 
 class ParseCSVTests: XCTestCase {
     let cases: [CSVTestCase] = [
-        CSVTestCase(name: "field", input: "\"o,ne\",\"qu,ote\",, two", expected: [["o,ne", "qu,ote", "", "two"]]),
+        CSVTestCase(name: "field", input: "\"o,ne\",\"qu,ote\",,two", expected: [["o,ne", "qu,ote", "", "two"]]),
         CSVTestCase(name: "line", input: "one,2,,three", expected: [["one", "2", "", "three"]]),
         CSVTestCase(name: "multipleLines", input: "one,2,,three\nfive,six,\"hello,q\"", expected: [["one", "2", "", "three"], ["five", "six", "hello,q"]]),
         CSVTestCase(name: "quotes", input: "one,\"qu,ote\",2,,three", expected: [["one", "qu,ote", "2", "", "three"]]),
@@ -185,9 +185,9 @@ class ParseCSVTests: XCTestCase {
         let data = try! Data(contentsOf: url)
         let string = String(data: data, encoding: .utf8)! + ""
         measure {
-            _ = string.parseAlt()
+//            _ = string.parseAlt()
 //            _ = string.parseCSV()
-//            _ = string.parseWithCombinators()
+            _ = string.parseWithCombinators()
         }
     }
 }

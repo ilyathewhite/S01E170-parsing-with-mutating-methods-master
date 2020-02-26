@@ -163,7 +163,7 @@ extension Parser {
     public static func longest<A>(_ parsers: [Parser<A>]) -> Parser<A> {
         return Parser<A> { str in
             let original = str
-            var parsed: [(match: A, str: Substring)] = []
+            var parsed: [(match: A, str: Substring.UnicodeScalarView)] = []
             for parser in parsers {
                 guard let match = parser.run(&str) else { continue }
                 parsed.append((match, str))
